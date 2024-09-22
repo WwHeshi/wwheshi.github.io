@@ -5,3 +5,9 @@
   font-weight: 300;
   font-display: swap;
 }
+@font-face {
+  font-family: 'smiley-sans';
+  src: url("../fonts/lanting/SmileySans-Oblique.ttf.woff2") format('woff2'), url("../fonts/smiley-sans-v2.0.1/SmileySans-Oblique.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

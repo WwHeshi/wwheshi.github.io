@@ -149,8 +149,14 @@ template {
   font-weight: 300;
   font-display: swap;
 }
+@font-face {
+  font-family: 'smiley-sans';
+  src: url("../fonts/lanting/SmileySans-Oblique.ttf.woff2") format('woff2'), url("../fonts/smiley-sans-v2.0.1/SmileySans-Oblique.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 html {
-  font-family: 'Microsoft Jhenghei', Lantinghei SC, 'lanting', PingFang SC, Seguo UI, Microsoft Yahei, Arial;
+  font-family: Microsoft Yahei, 'lanting', 'smiley-sans', 'Microsoft Jhenghei', Lantinghei SC, PingFang SC, Seguo UI, Arial;
 }
 html::-webkit-scrollbar {
   width: 8px;
@@ -165,7 +171,7 @@ html::-webkit-scrollbar-thumb:hover {
   background-color: #ddd;
 }
 body {
-  font-size: 11pt;
+  font-size: 12pt;
   font-weight: normal;
   line-height: 2em;
   overflow: overlay;
@@ -470,10 +476,14 @@ input[type="radio"]:not(:checked) + label:after {
 
 
 .header-logo a {
-  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px;
 }
 .navbar .menu a {
-  padding: 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0 10px;
 }
 .navbar .menu .active {
   font-weight: 900;
@@ -492,7 +502,8 @@ header label {
   -webkit-transform: translateY(0.1em) translateX(0.5em);
 }
 .copyright {
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 .pagination {
   display: flex;
@@ -579,7 +590,7 @@ header label {
   padding: 10px;
 }
 .intro .avatar img {
-  width: 128px;
+  width: 148px;
   height: auto;
   display: inline-block;
   -webkit-border-radius: 100%;
@@ -604,7 +615,7 @@ header label {
 }
 .nickname {
   font-size: 2em;
-  font-weight: normal;
+  font-weight: bold;
 }
 .links a {
   padding: 0 5px;
@@ -933,9 +944,10 @@ header label {
   text-align: right;
 }
 .post-copyright {
+  font-size: 14px;
+  line-height: 1.5rem;
   margin-top: 5rem;
   border-top: 1px solid #e8e8e8;
-  border-bottom: 1px solid #e8e8e8;
 }
 .post-copyright a {
   color: #2d96bd;
@@ -957,7 +969,6 @@ header label {
 }
 .dark-theme .post-copyright {
   border-top: 1px solid #909196;
-  border-bottom: 1px solid #909196;
 }
 .post-content code,
 .post-content pre {
