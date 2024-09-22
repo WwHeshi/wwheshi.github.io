@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Heshi">
+
+
+    <meta name="subtitle" content="blog">
+
+
+    <meta name="description" content="Heshi blog">
+
+
+    <meta name="keywords" content="Heshi">
+
+
+<title>cf 974div3 E题 优化dijkstra算法 | Heshi</title>
+
+
+
+    <link rel="icon" href="/image/1.jpg">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Heshi&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Heshi&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">cf 974div3 E题 优化dijkstra算法</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 23, 2024&nbsp;&nbsp; </a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/2014/problem/E">原题链接</a></p>
+<p>学习一手jiangly哥哥的代码</p>
+<p>建图</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;std::vector&lt;std::array&lt;<span class="type">int</span>, 2&gt;&gt;&gt; <span class="built_in">adj</span>(n);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">    <span class="type">int</span> u, v, w;</span><br><span class="line">    std::cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;</span><br><span class="line">    u--;</span><br><span class="line">    v--;</span><br><span class="line">    adj[u].<span class="built_in">push_back</span>(&#123;v, w&#125;);</span><br><span class="line">    adj[v].<span class="built_in">push_back</span>(&#123;u, w&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>dijkstra最短路</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> dijkstra = [&amp;](<span class="type">int</span> s) &#123;</span><br><span class="line">    std::vector&lt;i64&gt; <span class="built_in">dis</span>(<span class="number">2</span> * n, inf);</span><br><span class="line">    std::priority_queue&lt;std::pair&lt;i64, <span class="type">int</span>&gt;, std::vector&lt;std::pair&lt;i64, <span class="type">int</span>&gt;&gt;, std::greater&lt;&gt;&gt; pq;</span><br><span class="line">    pq.<span class="built_in">emplace</span>(<span class="number">0LL</span>, <span class="number">2</span> * s);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (!pq.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        <span class="keyword">auto</span> [d, u] = pq.<span class="built_in">top</span>();</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (dis[u] != inf) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        dis[u] = d;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> x = u / <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> t = u % <span class="number">2</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!t &amp;&amp; horse[x]) &#123;</span><br><span class="line">            pq.<span class="built_in">emplace</span>(d, <span class="number">2</span> * x + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> [y, w] : adj[x]) &#123;</span><br><span class="line">            pq.<span class="built_in">emplace</span>(d + (t ? w / <span class="number">2</span> : w), <span class="number">2</span> * y + t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">std::vector&lt;i64&gt; <span class="title">d</span><span class="params">(n, inf)</span></span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        d[i] = std::<span class="built_in">min</span>(dis[<span class="number">2</span> * i], dis[<span class="number">2</span> * i + <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> d;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>dij取消vis的使用，采用优先队列&lt;权重,点&gt;的形式入队<br>针对本题，采用奇数偶数分开的形式判断有无上马，增加一倍的顶点数。</p>
+<p>代码简洁优美，不得不说，妙，太妙了！</p>
+<p>再一次膜拜哥哥ing</p>
+<p>转换成普通dij模板如下</p>
+<p>建图</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;vector&lt;pair&lt;ll,ll&gt;&gt;&gt; <span class="built_in">g</span>(n<span class="number">+1</span>);</span><br><span class="line"><span class="keyword">while</span>(m--)&#123;</span><br><span class="line">    ll u,v,w;</span><br><span class="line">    cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;</span><br><span class="line">    g[u].<span class="built_in">push_back</span>(&#123;v,w&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>dij本体</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> dijkstra = [&amp;](<span class="type">int</span> s) &#123;</span><br><span class="line">    vector&lt;ll&gt; <span class="built_in">dis</span>(n<span class="number">+1</span>, INF);</span><br><span class="line">    priority_queue&lt;pair&lt;ll, ll&gt;, vector&lt;pair&lt;ll, ll&gt;&gt;, greater&lt;&gt;&gt; pq;</span><br><span class="line">    pq.<span class="built_in">emplace</span>(<span class="number">0LL</span>, s);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (!pq.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        <span class="keyword">auto</span> [d, u] = pq.<span class="built_in">top</span>();</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (dis[u] != INF) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        dis[u] = d;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> [y, w] : g[u]) &#123;</span><br><span class="line">            pq.<span class="built_in">emplace</span>(d + w, y );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dis;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> dis = <span class="built_in">dijkstra</span>(s);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">    cout&lt;&lt;dis[i]&lt;&lt;<span class="string">&quot; \n&quot;</span>[i==n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>洛谷模板题测试，成功！</p>
+
+        </div>
+        
+        
+            <section class="post-copyright">
+                <br>
+                
+                    <p class="copyright-item">
+                        <span>by</span>
+                        <span>Heshi</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <!-- <span>License:</span> -->
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <!-- <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        <a href="/tags/%E5%AD%A6%E4%B9%A0/"># 学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section> -->
+        <!-- <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/posts/imgtest/">图片测试</a>
+            
+        </section> -->
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 2023-2024 Heshi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
