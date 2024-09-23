@@ -974,15 +974,13 @@ header label {
 .post-content pre {
   line-height: 1.7em;
   padding: 7px;
-  font-size: 13px;
+  font-size: 14px;
   font-family: Consolas, Monaco, Menlo, Consolas, monospace;
 }
 .post-content code {
   line-height: 1.7em;
   padding: 3px 5px;
   border-radius: 4px;
-  color: #c7254e;
-  background: #f8f5ec;
 }
 .dark-theme .post-content code {
   color: #fffe28;
